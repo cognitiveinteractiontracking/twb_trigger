@@ -99,6 +99,5 @@ Um eine automatische Aktivierung zu erhalten kann der Kommando auch in die .bash
 
 
 ## Testen und Evaluation der PIGPIO Library und des periodischen Timers
-
-
+Für das Testen der Trigger Funktion wurde eine C-Programm [*InterruptTrigger*](https://github.com/kevinp1993/TWB_Trigger/blob/master/InterruptTrigger/InterruptTrigger.c) geschrieben. 
 

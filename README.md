@@ -119,35 +119,55 @@ Die Ausgänge der GPIOs wurden mithilfe eines Oszilloskop beobachtet und die Sig
 Zunächst einmal die vier Ausgänge bei unterschiedlichem großem Zeitfenster:<br />
 
 <p float="left">
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_10ms.png" width="400" />
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_20ms.png" width="400" /> 
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_100ms.png" width="400" />
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_400ms.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/01_Signal_10ms.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/01_Signal_20ms.png" width="400" /> 
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/01_Signal_100ms.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/01_Signal_400ms.png" width="400" />
 </p> <br /> <br />
 
 Die Pulsweite lässt sich ebenfalls anpassen (10%, 30%, 50% und 70% als Beispiel aufgeführt):<br />
 
 <p float="left">
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_10P.png" width="400" />
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_30P.png" width="400" /> 
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_50P.png" width="400" />
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_70P.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/02_Signal_10P.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/02_Signal_30P.png" width="400" /> 
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/02_Signal_50P.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/02_Signal_70P.png" width="400" />
 </p> <br /> <br />
 
 Bei gegebener Freuqeunz von 30Hz (entspricht einer Periodendauer von 33,33ms) wird diese auch an den Ausgängen gemessen: <br />
 
-![Frequenz](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/03_Periode.png) <br /> <br />
+![Frequenz](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/03_Periode.png) <br /> <br />
 
 Der Jitter beträgt ungefähr 150us bei der abfallenden Flanke:
-![Jitter](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/04_Jitter.png) <br /> <br />
+![Jitter](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_1/04_Jitter.png) <br /> <br />
 
 ## Realisierung in der ROS Umgebung
 Im [catkin workspace](https://github.com/kevinp1993/TWB_Trigger/tree/master/catkin_ws) wurde das Paket [cam_trigger](https://github.com/kevinp1993/TWB_Trigger/tree/master/catkin_ws/src/cam_trigger) erstellt. Hier befindet sich zum einen die [cfg-File](https://github.com/kevinp1993/TWB_Trigger/blob/master/catkin_ws/src/cam_trigger/cfg/cam_trigger.cfg) für die [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure/Tutorials) GUI, als auch der [Trigger Node](https://github.com/kevinp1993/TWB_Trigger/blob/master/catkin_ws/src/cam_trigger/src/cam_trigger_publisher_node.cpp). <br />
 Über die GUI sollen zur Laufzeit des Triggers Frequenz und Pulslänge einstellbar sein. Ebenso kann das sowohl der gesamte Triggerprozess über System, als auch einzelne Triggers für die Kamera ein- und ausgeschaltet werden. <br />
-Im Node werden periodische Clock-Message bei den Triggerzeitpunkten gepublished. Da das Publishen der Message auch Zeit benötigt, wird diese Zeit beim sleep berücksichtigt, um abweichende Periodendauern zu verhindern. 
+Im Node werden periodische Clock-Message bei den Triggerzeitpunkten gepublished. Da das Publishen der Message auch Zeit benötigt, wird diese Zeit beim sleep berücksichtigt, um abweichende Periodendauern zu verhindern. <br />
+
+### Starten des Triggers und der GUI
+Zunächst muss das Projekt im catkin workspace gesourcet und gebaut werden:
+```
+source catkin_ws/devel/setup.bash
+catkin_make
+```
+Da das ubiquityrobotics Image beim booten automatisch den roscore startet, muss dies nicht mehr manuell gemacht werden. Um den roscore dennoch zu beenden und neuzustarten, müssen folgende Befehle eingegeben werden:
+```
+killall -9 roscore
+roscore
+```
+Der Node wird folgendermaßen gestartet:
+```
+rosrun cam_trigger cam_trigger_publisher
+```
+Die Dynamic Reconfigure GUI wird im Anschluss gestartet:
+```
+rosrun rqt_reconfigure rqt_reconfigure
+```
 
 ### Test und Evaluation
-Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier die Ergebnisse:
+Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier die Ergebnisse: <br />
 
 
 

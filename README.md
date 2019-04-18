@@ -4,7 +4,7 @@ Das Ziel dieses Projektes ist es, die Kameras in der TWB mithilfe eines Raspberr
 Dazu wird ein periodischer Timer für das Triggern der Kameras genutzt, um an den GPIOs des Raspberry Pi ein Signal zu erzeugen.
 Da die GPIOs des Raspberry Pi einen Output von 3,3V generieren, werden diese mit einem Pegelwandler auf 5V gewandelt.
 Außerdem läuft auf dem Raspberry Pi ROS, welches es dem Pi erlaubt mit dem bestehendem System zu kommunizieren.<br />
-![Test](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/TWB_Trigger_Projekt.png)
+![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/TWB_Trigger_Projekt.png)
 
 ## Vorbereitung
 Dieser Teil befasst sich mit der Einrichtung der Hard- und Software des Raspberry Pi.
@@ -123,15 +123,31 @@ Zunächst einmal die vier Ausgänge bei unterschiedlichem großem Zeitfenster:<b
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_20ms.png" width="400" /> 
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_100ms.png" width="400" />
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_400ms.png" width="400" />
-</p>
+</p> <br /> <br />
 
 Die Pulsweite lässt sich ebenfalls anpassen (10%, 30%, 50% und 70% als Beispiel aufgeführt):<br />
 
 <p float="left">
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_10P.png" width="400" />
-  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_30P.png width="400" /> 
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_30P.png" width="400" /> 
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_50P.png" width="400" />
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/02_Signal_70P.png" width="400" />
-</p>
+</p> <br /> <br />
+
+Bei gegebener Freuqeunz von 30Hz (entspricht einer Periodendauer von 33,33ms) wird diese auch an den Ausgängen gemessen: <br />
+
+![Frequenz](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/03_Periode.png) <br /> <br />
+
+Der Jitter beträgt ungefähr 150us bei der abfallenden Flanke:
+![Jitter](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/04_Jitter.png) <br /> <br />
+
+## Realisierung in der ROS Umgebung
+Im [catkin workspace](https://github.com/kevinp1993/TWB_Trigger/tree/master/catkin_ws) wurde das Paket [cam_trigger](https://github.com/kevinp1993/TWB_Trigger/tree/master/catkin_ws/src/cam_trigger) erstellt. Hier befindet sich zum einen die [cfg-File](https://github.com/kevinp1993/TWB_Trigger/blob/master/catkin_ws/src/cam_trigger/cfg/cam_trigger.cfg) für die [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure/Tutorials) GUI, als auch der [Trigger Node](https://github.com/kevinp1993/TWB_Trigger/blob/master/catkin_ws/src/cam_trigger/src/cam_trigger_publisher_node.cpp). <br />
+Über die GUI sollen zur Laufzeit des Triggers Frequenz und Pulslänge einstellbar sein. Ebenso kann das sowohl der gesamte Triggerprozess über System, als auch einzelne Triggers für die Kamera ein- und ausgeschaltet werden. <br />
+Im Node werden periodische Clock-Message bei den Triggerzeitpunkten gepublished. Da das Publishen der Message auch Zeit benötigt, wird diese Zeit beim sleep berücksichtigt, um abweichende Periodendauern zu verhindern. 
+
+### Test und Evaluation
+Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier die Ergebnisse:
+
 
 

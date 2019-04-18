@@ -99,5 +99,25 @@ Um eine automatische Aktivierung zu erhalten kann der Kommando auch in die .bash
 
 
 ## Testen und Evaluation der PIGPIO Library und des periodischen Timers
-Für das Testen der Trigger Funktion wurde eine C-Programm [*InterruptTrigger*](https://github.com/kevinp1993/TWB_Trigger/blob/master/InterruptTrigger/InterruptTrigger.c) geschrieben. 
-
+Für das Testen der Trigger Funktion wurde eine C-Programm [*InterruptTrigger*](https://github.com/kevinp1993/TWB_Trigger/blob/master/InterruptTrigger/InterruptTrigger.c) geschrieben. Um die Frequenz in Hz und die Weite des Impulses in % anzupassen, können folgende Variablen im Quellcode geändert werden:
+```c
+int freq = 30;
+double width = 5;
+```
+Das Setzen bzw. Bereinigen von mehreren GPIOs gleichzeitig efolgt über die Funktionen:
+```c
+int set_bank_1(int pi, uint32_t bitmaske);
+int clear_bank_1(int pi, uint32_t bitmaske);
+```
+Der Interrupt Timer aus der *signal.h* Library benötigt eine Interrupt Routine Funktionshandler *alarmWakeup*	und eine Periodendauer in us, wann der Timer einen Interrupt auslösen soll:
+```c
+signal(SIGALRM, alarmWakeup);
+ualarm(timer_periode,timer_periode);
+```
+<br />
+Die Ausgänge der GPIOs wurden mithilfe eines Oszilloskop beobachtet und die Signale auf Amplitude, Frequenzabweichung, Impulsweite und Synchronität zwischen den Signalen hin geprüft.<br />
+Zunächst einmal die vier Ausgänge bei unterschiedlichem großem Zeitfenster
+![alt-text-1](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_10ms.png "10ms") <!-- .element height="50%" width="50%" -->
+![alt-text-2](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_20ms.png "20ms") <!-- .element height="50%" width="50%" -->
+![alt-text-3](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_100ms.png "100ms") <!-- .element height="50%" width="50%" -->
+![alt-text-4](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_400ms.png "400ms") <!-- .element height="50%" width="50%" -->

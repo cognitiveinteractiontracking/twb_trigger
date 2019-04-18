@@ -37,7 +37,52 @@ TODO: Image
 ### Raspberry Pi OS und ROS Installation
 Verwendet wird das [ubiquityrobotics Image](https://ubiquity-pi-image.sfo2.cdn.digitaloceanspaces.com/2019-02-19-ubiquity-xenial-lxde-raspberry-pi.img.xz),
 welches auf Ubuntu 16.04 basiert und ROS vorinstalliert hat. Verwendet wird die Version *2019-02-19-ubiquity-xenial-lxde*<br />
-Das Image wird auf eine SD-Card geschrieben und im Anschluss mit dem Raspberry Pi eingerichtet.
+Das Image wird auf eine SD-Card geschrieben und im Anschluss in den Raspberry Pi gesteckt. <br />
+Nachdem das Filesystem expandiert wurde, kann sich mit folgenden Zugangsdaten eingeloggt werden:
+```
+username: ubuntu
+pw: ubuntu
+```
+Verbinde dich nun mit einem internetfähigen Netzwerk<br />
+
+Installiere Updates:
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
+Folgende Dinge können nun noch eingerichtet werden:
+**Deutsches Tastatur Layout:** 
+* Sprachpaket installieren: *Preferences* --> *Language Support* --> *Install/Remove Languages* --> *German*
+* Tastaturlayout umstellen:
+```
+sudo dpkg-reconfigure keyboard-configuration
+service keyboard-setup restart
+```
+* Reboot
+
+**SSH-Verbindung mit einem PC:**
+* SSH-Verbindung freischalten unter:
+```
+sudo raspi-config 
+```
+* Raspberry Pi und PC mit Ethernet-Kabel verbinden
+* Ethernet-Verbindung einrichten auf Raspberry Pi:
+     * IP4-Einstellungen: Manuell
+     * IP: 192.168.200.xxx
+     * Netzmake: 255.255.255.0
+     * Gateway: 0.0.0.0
+* Ethernet-Verbindung einrichten auf PC:
+     * IP4-Einstellungen: Manuell
+     * IP: 192.168.200.xxx (andere Endung als Raspberry wählen)
+     * Netzmake: 255.255.255.0
+     * Gateway: 0.0.0.0
+* SSH Verbindung einrichten (auf PC Seite):
+```
+ssh -Y -X ubuntu@192.168.200.xxx
+```
+* Passwort des Raspberry Pi angeben
+ 
+
 
 ### Einrichtung der RTC
 Folgende Pakete müssen nachträglich installiert werden:
@@ -55,6 +100,12 @@ Für das Überprüfen, ob der RTC erkannt wurde folgenden Befehl ausführen:
 sudo i2cdetect -y 1
 ```
 Hier sollte die Adresse 0x68 vom RTC zu sehen sein.<br />
+Um die hw-clock einzubinden folgende Zeile vor exit 0 an die Datei */etc/rc.local* hängen:
+```
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+```
+Danach sollte das System rebootet werden.<br />
+
 Um die RTC zu setzen, muss der Raspberry Pi mit dem Internet verbunden sein bzw. Zugriff auf einem ntp Server besitzen.
 Die RTC wird dann mit folgendem Befehl mit der aktuellen Systemzeit beschrieben:
 ```
@@ -68,9 +119,8 @@ Im Anschluss kann die Systemzeit mit der RTC gesetzt werden:
 ```
 sudo hwclock -s
 ```
-Um die Systemzeit beim Booten auf die RTC zu setzen, werden folgende Zeilen an das Ende von */etc/rc.local* gehängt:
+Um die Systemzeit beim Booten auf die RTC zu setzen, werden folgende Zeilen an das Ende von */etc/rc.local* gehängt (vor exit 0):
 ```
-echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
 hwclock -s
 ```
 Weitere nützliche Kommandos:

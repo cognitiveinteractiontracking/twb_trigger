@@ -168,6 +168,27 @@ rosrun rqt_reconfigure rqt_reconfigure
 
 ### Test und Evaluation
 Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier die Ergebnisse: <br />
+1. Das System wird mit der Auswahl von System gestartet. Der Defaultwert der Frequenz liegt bei 30Hz, für die Pulsweite bei 20% und alle Kameras sind ausgewählt:<br />
+<p float="left">
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/01_Signal_GUI.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/01_Signal.png" width="400" /> 
+</p> <br /> <br />
 
+2. Die Kameras lassen sich ein- und ausschalten:
+<p float="left">
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/02_Signal_cam_GUI.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/02_Signal_cam.png" width="400" /> 
+</p> <br /> <br />
 
+3. Die Frequenz und die Pulsweite der Signal lassen sich einstellen
+<p float="left">
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/03_Signal_30_40_GUI.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/03_Signal_30_40.png" width="400" />
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/04_Signal_50_50_GUI.png" width="400" /> 
+  <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/04_Signal_50_50.png" width="400" /> 
+</p> <br /> <br />
 
+## Entwickler/Autoren/Verantwortliche
+
+* [kevinp1993](https://github.com/kevinp1993)
+* [tik0](https://github.com/tik0)

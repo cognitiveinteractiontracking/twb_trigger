@@ -117,6 +117,8 @@ ualarm(timer_periode,timer_periode);
 <br />
 Die Ausgänge der GPIOs wurden mithilfe eines Oszilloskop beobachtet und die Signale auf Amplitude, Frequenzabweichung, Impulsweite und Synchronität zwischen den Signalen hin geprüft.<br />
 Zunächst einmal die vier Ausgänge bei unterschiedlichem großem Zeitfenster
+![Test](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/TWB_Trigger_Projekt.png)
+
 ![alt-text-1](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_10ms.png "10ms") <!-- .element height="50%" width="50%" -->
 ![alt-text-2](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_20ms.png "20ms") <!-- .element height="50%" width="50%" -->
 ![alt-text-3](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images/01_Signal_100ms.png "100ms") <!-- .element height="50%" width="50%" -->

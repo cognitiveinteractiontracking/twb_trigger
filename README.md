@@ -69,7 +69,12 @@ gestartet werden.
 
 
 ### Einrichtung der RTC
-Folgende Pakete müssen nachträglich installiert werden:
+Folgende Treiber müssen nachträglich in die Datei /etc/modules eingetragen werden:
+```
+i2c-bcm2708
+i2c_dev
+```
+Dannach sollten folgende Pakete nachträglich installiert/aktuallisiert werden:
 ```
 sudo apt-get install i2c-tools
 sudo apt-get install ntp
@@ -84,9 +89,14 @@ Für das Überprüfen, ob der RTC erkannt wurde folgenden Befehl ausführen:
 sudo i2cdetect -y 1
 ```
 Hier sollte die Adresse 0x68 vom RTC zu sehen sein.<br />
-Um die hw-clock einzubinden folgende Zeile vor exit 0 an die Datei */etc/rc.local* hängen:
+Um das Modul zu aktivieren, muss folgender Befehl ausgeführt werden:
 ```
-echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
+echo ds3231 0x68 | sudo tee /sys/class/i2c-adapter/i2c-1/new_device
+```
+
+Um die hw-clock beim Booten einzubinden, folgende Zeile vor exit 0 an die Datei */etc/rc.local* hängen:
+```
+echo ds3231 0x68 > /sys/class/i2c-adapter/i2c-1/new_device
 ```
 Danach sollte das System rebootet werden.<br />
 

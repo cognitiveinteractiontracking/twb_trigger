@@ -35,13 +35,12 @@ Folgende Hardwarekomponenten werden verwendet:
 TODO: Image
 
 ### Raspberry Pi OS und ROS Installation
-Verwendet wird das [ubiquityrobotics Image](https://ubiquity-pi-image.sfo2.cdn.digitaloceanspaces.com/2019-02-19-ubiquity-xenial-lxde-raspberry-pi.img.xz),
-welches auf Ubuntu 16.04 basiert und ROS vorinstalliert hat. Verwendet wird die Version *2019-02-19-ubiquity-xenial-lxde*<br />
+Verwendet wird das [Raspbian Strech with desktop Image](https://www.raspberrypi.org/downloads/) mit der Kernel version 4.14.
 Das Image wird auf eine SD-Card geschrieben und im Anschluss in den Raspberry Pi gesteckt. <br />
 Nachdem das Filesystem expandiert wurde, kann sich mit folgenden Zugangsdaten eingeloggt werden:
 ```
-username: ubuntu
-pw: ubuntu
+username: pi
+pw: raspberry
 ```
 Verbinde dich nun mit einem internetfähigen Netzwerk<br />
 
@@ -50,38 +49,23 @@ Installiere Updates:
 sudo apt-get update
 sudo apt-get upgrade
 ```
-Folgende Dinge können nun noch eingerichtet werden:
-**Deutsches Tastatur Layout:** 
-* Sprachpaket installieren: *Preferences* --> *Language Support* --> *Install/Remove Languages* --> *German*
-* Tastaturlayout umstellen:
-```
-sudo dpkg-reconfigure keyboard-configuration
-service keyboard-setup restart
-```
-* Reboot
-
-**SSH-Verbindung mit einem PC:**
-* SSH-Verbindung freischalten unter:
-```
-sudo raspi-config 
-```
-* Raspberry Pi und PC mit Ethernet-Kabel verbinden
-* Ethernet-Verbindung einrichten auf Raspberry Pi:
-     * IP4-Einstellungen: Manuell
-     * IP: 192.168.200.xxx
-     * Netzmake: 255.255.255.0
-     * Gateway: 0.0.0.0
-* Ethernet-Verbindung einrichten auf PC:
-     * IP4-Einstellungen: Manuell
-     * IP: 192.168.200.xxx (andere Endung als Raspberry wählen)
-     * Netzmake: 255.255.255.0
-     * Gateway: 0.0.0.0
-* SSH Verbindung einrichten (auf PC Seite):
-```
-ssh -Y -X ubuntu@192.168.200.xxx
-```
-* Passwort des Raspberry Pi angeben
+Nun kann ROS eingerichtet werden. Hierzu findet sich im ROS Wiki eine [Anleitung](http://wiki.ros.org/ROSberryPi/Installing%20ROS%20Kinetic%20on%20the%20Raspberry%20Pi) zum Einrichten von ROS Kinetic.
  
+Für einen Betrieb des Raspberry Pi ohne Bildschrim ist eine SSH Verbindung zu einem PC sinnvoll.
+Hierzu muss zunächst über raspi-config die SSH-Verbindung aktiviert werden am Pi.
+Nach der Verbindung des Pis mit einem Ethernet-Kabel kann die IP-Adresse des Pi mit folgendem Kommando eingesehen werden:
+```
+ifconfig
+```
+Hiernach ist eine lokale Verbindung am PC einzurichten. Mit folgendem Befehl kann nun eine SSH-Verbindung aufgebaut werden:
+```
+ssh -X -Y pi@IP-des-Raspberry
+```
+Ebenso ist die Nutzung eines Terminals hilfreich. Nach dem Start der SSH-Verbindung kann dies mit:
+```
+x-terminal-emulator &
+```
+gestartet werden.
 
 
 ### Einrichtung der RTC
@@ -145,8 +129,11 @@ Nach der Installation kann das PIGPIO Deamon mit folgendem Kommando gestartet we
 ```
 sudo pigpiod
 ```
-Um eine automatische Aktivierung zu erhalten kann der Kommando auch in die .bashrc im Homeverzeichnis geschrieben werden.
-
+Um eine automatische Aktivierung beim Booten zu erhalten sind folgende Kommandos hilfreich:
+```
+sudo systemctl enable pigpiod
+sudo systemctl start pigpiod 
+```
 
 ## Testen und Evaluation der PIGPIO Library und des periodischen Timers
 Für das Testen der Trigger Funktion wurde eine C-Programm [*InterruptTrigger*](https://github.com/kevinp1993/TWB_Trigger/blob/master/InterruptTrigger/InterruptTrigger.c) geschrieben. Um die Frequenz in Hz und die Weite des Impulses in % anzupassen, können folgende Variablen im Quellcode geändert werden:

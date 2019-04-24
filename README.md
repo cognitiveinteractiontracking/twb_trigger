@@ -184,14 +184,13 @@ Im [catkin workspace](https://github.com/kevinp1993/TWB_Trigger/tree/master/catk
 Im Node werden periodische Clock-Message bei den Triggerzeitpunkten gepublished. Da das Publishen der Message auch Zeit benötigt, wird diese Zeit beim sleep berücksichtigt, um abweichende Periodendauern zu verhindern. <br />
 
 ### Starten des Triggers und der GUI
-Zunächst muss das Projekt im catkin workspace gesourcet und gebaut werden:
+Zunächst muss das Projekt im catkin workspace gebaut und gesourcet werden:
 ```
-source catkin_ws/devel/setup.bash
 catkin_make
+source catkin_ws/devel/setup.bash
 ```
-Da das ubiquityrobotics Image beim booten automatisch den roscore startet, muss dies nicht mehr manuell gemacht werden. Um den roscore dennoch zu beenden und neuzustarten, müssen folgende Befehle eingegeben werden:
+Nun wird eine roscore gestartet
 ```
-killall -9 roscore
 roscore
 ```
 Der Node wird folgendermaßen gestartet:

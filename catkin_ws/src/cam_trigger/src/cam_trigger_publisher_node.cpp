@@ -3,16 +3,19 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include <dynamic_reconfigure/server.h>
 #include <cam_trigger/cam_triggerConfig.h>
-#include <signal.h>
 #include <unistd.h>
 #include <pigpiod_if2.h>
-#include <time.h>
+
+//#include <time.h>
+//#include <signal.h>
 
 //-----------Ros Stuff----------------------------
 //Publisher
 ros::Publisher clock_trigger_pub;
 //Clock Message
 rosgraph_msgs::Clock trigger_time;
+//Ros Timer for Interrupt
+ros::Timer timer;
 
 
 //-----------Variable Definition------------------
@@ -22,8 +25,8 @@ int pi;
 int freq = 30;
 //Set Impulse width in %
 double width = 5;
-//Impulse width in us
-double width_us; 
+//Impulse width in s
+double width_s;
 //Enabled/Disabled Cameras
 bool cam[4] = {true, true, true, true};
 //System Disable/Enable
@@ -45,7 +48,7 @@ uint32_t BitMask = (1 << output_pin_1) | (1 << output_pin_2) | (1 << output_pin_
 
 
 //-----------Timer Interrupt Routine---------------
-void alarmWakeup(int signum) {
+void alarmWakeup(const ros::TimerEvent&) {
 	//Set Bitmask to set the GPIOs to high 
 	set_bank_1(pi, BitMask);
 	
@@ -59,11 +62,11 @@ void alarmWakeup(int signum) {
 	//std::string iso_time_str = boost::posix_time::to_iso_extended_string(my_posix_time);
 	//ROS_INFO_STREAM(iso_time_str);
 	
-	//Calculate publishing time in us
-	double t_publish = (((double)(ros::Time::now().sec) * 1000000000.0 + (double)(ros::Time::now().nsec)) - ((double)(t1.sec) * 1000000000.0 + (double)(t1.nsec))) / 1000.0;
+	//Calculate publishing time in s
+	double t_publish = (((double)(ros::Time::now().sec) + (double)(ros::Time::now().nsec) / 1000000000.0) - ((double)(t1.sec) + (double)(t1.nsec) / 1000000000.0 ));
 	
 	//Wait to generate a pulsewidth (substract the time to publish the clock message)
-	usleep(width_us - t_publish);
+	ros::Duration(width_s - t_publish).sleep();
 	
 	//Set Bitmask to set the GPIOs to low
 	clear_bank_1(pi, BitMask);
@@ -76,7 +79,7 @@ void alarmWakeup(int signum) {
 void callback(cam_trigger::cam_triggerConfig &config, uint32_t level) {
 
 	//cancel the actual alarm and gpios
-	ualarm(0,0);
+	timer.stop();
 	clear_bank_1(pi, UINT32_MAX);	
 	
 	//Display new Parameter
@@ -102,11 +105,13 @@ void callback(cam_trigger::cam_triggerConfig &config, uint32_t level) {
 	
 	//Start alarm new
 	if(system_stat == true) {
-		double timer_periode = 1000000.0 / freq; 
-		width_us = timer_periode * (width/100.0);			
-		ROS_INFO("Timer Periode: %f us -  Pulswidth of signal: %f us\n", timer_periode, width_us);
-		signal(SIGALRM, alarmWakeup);
-		ualarm(timer_periode,timer_periode);
+		double timer_periode = 1.0 / freq;
+		width_s = timer_periode * (width/100.0);		
+		ROS_INFO("Timer Periode: %f s -  Pulswidth of signal: %f s\n", timer_periode, width_s);
+		
+		//Set new Timer
+		timer.setPeriod(ros::Duration(timer_periode));
+		timer.start();
 	}
 }
 
@@ -122,17 +127,14 @@ int main(int argc, char **argv) {
 	clock_trigger_pub = Cam_Trigger.advertise<rosgraph_msgs::Clock>("clock_trigger_pub", 1000);
 	
 	//Init dynamic reconfigure
-	//~ ros::param::set("Frequenz",30);
-	//~ ros::param::set("Pulsweite",20);
-	//~ ros::param::set("System",false);
-	//~ ros::param::set("cam1",true);
-	//~ ros::param::set("cam2",true);
-	//~ ros::param::set("cam3",true);
-	//~ ros::param::set("cam4",true);
 	dynamic_reconfigure::Server<cam_trigger::cam_triggerConfig> server;
 	dynamic_reconfigure::Server<cam_trigger::cam_triggerConfig>::CallbackType f;
 	f = boost::bind(&callback, _1, _2);
 	server.setCallback(f);
+	
+	//Init Timer with 30Hz
+	timer = Cam_Trigger.createTimer(ros::Duration(1/30), alarmWakeup); 
+	timer.stop();
 
 	//Initialize GPIOs
 	int pi = pigpio_start(NULL, "8888");

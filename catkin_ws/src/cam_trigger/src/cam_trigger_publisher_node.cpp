@@ -22,7 +22,7 @@ ros::Timer timer;
 //Raspberry Pi ID
 int pi;
 //Set Timer Freuqency
-int freq = 30;
+double freq = 30;
 //Set Impulse width in %
 double width = 5;
 //Impulse width in s

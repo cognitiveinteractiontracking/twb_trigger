@@ -234,6 +234,12 @@ Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier di
   <img src="https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/Oscilloscope_Images_2/04_Signal_50_50.png" width="400" /> 
 </p> <br /> <br />
 
+
+### Langzeittest an Kamera
+Zu Testzwecken wurde der Trigger an den realen Kameras getestet und dabei die Zeitstempel der Kameras aufgezeichnet. Aus den Zeitstempeln wurden die Frequenzen extrahiert. Diese wurden mittels Mittelwert, Varianz, Histogramm und Ausreißer hin ausgewertet. Folgendes Histogramm zeigt alle relevanten Statistiken:
+![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz.png)
+
+
 ## Entwickler/Autoren/Verantwortliche
 
 * [kevinp1993](https://github.com/kevinp1993)

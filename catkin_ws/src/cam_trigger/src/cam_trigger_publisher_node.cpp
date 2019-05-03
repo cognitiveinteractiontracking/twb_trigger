@@ -26,7 +26,7 @@ int freq = 30;
 //Set Impulse width in %
 double width = 5;
 //Impulse width in s
-double width_s;
+ros::Duration width_d(0.0);
 //Enabled/Disabled Cameras
 bool cam[4] = {true, true, true, true};
 //System Disable/Enable
@@ -49,29 +49,25 @@ uint32_t BitMask = (1 << output_pin_1) | (1 << output_pin_2) | (1 << output_pin_
 
 //-----------Timer Interrupt Routine---------------
 void alarmWakeup(const ros::TimerEvent&) {
-	//Set Bitmask to set the GPIOs to high 
+	//Set Bitmask to set the GPIOs to high
 	set_bank_1(pi, BitMask);
 	
 	//Publish the trigger time
-	ros::Time t1 = ros::Time::now();
+	const ros::Time t1 = ros::Time::now();
 	trigger_time.clock = t1;
 	clock_trigger_pub.publish(trigger_time);
 	
-	//Conversation to date and time
-	//boost::posix_time::ptime my_posix_time = t1.toBoost();
-	//std::string iso_time_str = boost::posix_time::to_iso_extended_string(my_posix_time);
-	//ROS_INFO_STREAM(iso_time_str);
-	
-	//Calculate publishing time in s
-	double t_publish = (((double)(ros::Time::now().sec) + (double)(ros::Time::now().nsec) / 1000000000.0) - ((double)(t1.sec) + (double)(t1.nsec) / 1000000000.0 ));
-	
 	//Wait to generate a pulsewidth (substract the time to publish the clock message)
-	ros::Duration(width_s - t_publish).sleep();
+	const ros::Time t2 = ros::Time::now();
+	const ros::Duration publish_d(t2-t1);
+	if (publish_d >= width_d) {
+		ROS_ERROR("Pulsewidth cannot be accomplished: publish_d >= width_d");
+	} else {
+		ros::Duration(width_d - publish_d).sleep();
+	}
 	
 	//Set Bitmask to set the GPIOs to low
 	clear_bank_1(pi, BitMask);
-	
-	//ROS_INFO("Timer abgelaufen");
 }
 
 
@@ -80,7 +76,7 @@ void callback(cam_trigger::cam_triggerConfig &config, uint32_t level) {
 
 	//cancel the actual alarm and gpios
 	timer.stop();
-	clear_bank_1(pi, UINT32_MAX);	
+	clear_bank_1(pi, UINT32_MAX);
 	
 	//Display new Parameter
 	ROS_INFO("Parameter: Frequenz: %f Hz  -  Pulsweite: %f %%  -  System AN: %s  - Cam1 AN: %s  - Cam2 AN: %s  - Cam3 AN: %s  - Cam4 AN: %s", 
@@ -106,8 +102,8 @@ void callback(cam_trigger::cam_triggerConfig &config, uint32_t level) {
 	//Start alarm new
 	if(system_stat == true) {
 		double timer_periode = 1.0 / freq;
-		width_s = timer_periode * (width/100.0);		
-		ROS_INFO("Timer Periode: %f s -  Pulswidth of signal: %f s\n", timer_periode, width_s);
+		width_d = ros::Duration(timer_periode * (width/100.0));
+		ROS_INFO("Timer Periode: %f s -  Pulswidth of signal: %f s\n", timer_periode, width_d.toSec());
 		
 		//Set new Timer
 		timer.setPeriod(ros::Duration(timer_periode));

@@ -6,16 +6,24 @@ format long;
 %% Read Data
 
 %Load Data
-bag = rosbag('cam1_info_25hz_50dc_2019-04-29-23-49-48.bag');
+bag = rosbag('2019-05-08-08-26-44.bag');
+allMsgs = readMessages(bag,"DataFormat","struct");
+
 %Load Timestamps
-TimeStampsTable = bag.MessageList(:,1);
-TimeStamps = table2array(TimeStampsTable);
+n = size(allMsgs,1);
+for i=1:n
+   TimeStamps(i,1) = double(allMsgs{i}.Header.Stamp.Sec) + double(allMsgs{i}.Header.Stamp.Nsec) * 1e-9;
+end
+
+%TimeStampsTable = bag.MessageList(:,1);
+%TimeStamps = table2array(TimeStampsTable);
 
 SetFreq = 25;
 
 
 %% Manipulate Data
-TimeStamps = TimeStamps - bag.StartTime;
+%TimeStamps = TimeStamps - bag.StartTime;
+TimeStamps = TimeStamps - TimeStamps(1);
 dt = diff(TimeStamps);
 freq = 1./dt;
 
@@ -84,6 +92,16 @@ line([MaxDiff MaxDiff], ylim, 'LineWidth', 2, 'Color', [0.3010, 0.7450, 0.9330])
 legend(['Histogram'],['optimum: ' num2str(0)],['mean Jitter: ' num2str(MeanDiff)],...
     ['variance Jitter: ' num2str(MeanDiff-VarDiff)], ['variance Jitter: ' num2str(MeanDiff+VarDiff)],...
     ['Max negative Jitter: ' num2str(MinDiff)], ['Max positive Jitter: ' num2str(MaxDiff)]);
+
+figure(3);
+subplot(2,1,1);
+plot(TimeStamps,DiffVec);
+xlabel('Time [s]');
+ylabel('Jitter [ms]');
+subplot(2,1,2);
+plot(TimeStamps(2:end),dt);
+xlabel('Time [s]');
+ylabel('dt [ms]');
 
 
 

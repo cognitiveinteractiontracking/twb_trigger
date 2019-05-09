@@ -239,8 +239,12 @@ Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier di
 Zu Testzwecken wurde der Trigger an den realen Kameras getestet und dabei die Zeitstempel der Kameras aufgezeichnet. Aus den Zeitstempeln wurden die Frequenzen extrahiert. Diese wurden mittels Mittelwert, Varianz, Histogramm und Ausreißer hin ausgewertet. Folgendes Histogramm zeigt alle relevanten Statistiken:
 ![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz.png)
 
-Außerdem wurde eine Statistik aufgestellt, welche die erwarteten Zeitstempel mit dem gemessenen Zeitstempeln vergleicht (Differenz gebildet). Aus diesem Vergleich lassen sich ebenfalls der Mittelwert, Varianz, Histogramm und Ausreißer bilden. Aus dieser Statistik lassen sich Rückschlüsse zum Jitter ziehen.  
+Außerdem wurde eine Statistik aufgestellt, welche die erwarteten Zeitstempel mit dem gemessenen Zeitstempeln vergleicht (Differenz gebildet). Aus diesem Vergleich lassen sich ebenfalls der Mittelwert, Varianz, Histogramm und Ausreißer bilden. Aus dieser Statistik lassen sich Rückschlüsse zum Jitter ziehen.<br />
+Datensatz 1:
 ![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz_Jitter.png)
+
+Datensatz 2:
+![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz_Jitter_2.png)
 
 
 ## Entwickler/Autoren/Verantwortliche

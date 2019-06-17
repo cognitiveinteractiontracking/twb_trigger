@@ -2,8 +2,8 @@
 
 Das Ziel dieses Projektes ist es, die Kameras in der TWB mithilfe eines Raspberry Pi zu synchronisieren. 
 Dazu wird ein periodischer Timer für das Triggern der Kameras genutzt, um an den GPIOs des Raspberry Pi ein Signal zu erzeugen.
-Da die GPIOs des Raspberry Pi einen Output von 3,3V generieren, werden diese mit einem Pegelwandler auf 5V gewandelt.
 Außerdem läuft auf dem Raspberry Pi ROS, welches es dem Pi erlaubt mit dem bestehendem System zu kommunizieren.<br />
+Hinweis: Der Pegelwandler von 3,3V (GPIO Raspberry) auf 5V ist nicht nötig, da die Kameras auch mit einer Eingangsspannung von 3,3V getriggert werden können!
 ![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/Images/TWB_Trigger_Projekt.png)
 
 ## Vorbereitung
@@ -12,7 +12,6 @@ Dieser Teil befasst sich mit der Einrichtung der Hard- und Software des Raspberr
 ### Hardwarekomponenten
 Folgende Hardwarekomponenten werden verwendet:
 * Raspberry Pi 3B
-* Adafruit TXB0108 Level Shifter
 * DS3231 Real-Time-Clock
 
 ### Hardware Einrichtung/Schematic
@@ -22,17 +21,12 @@ Folgende Hardwarekomponenten werden verwendet:
      3. Clock <-> Pin05: GPIO03/SCL1
      4. NC <-> Pin07: GPIO04
      5. GND <-> Pin09: GND
-2. Pegelwandler
-     1. VCCA <-> Pin17: 3,3V
-     2. VCCB <-> Pin02: 5V
-     3. GND <-> Pin39: GND
-     4. A1 <-> Pin31: GPIO06
-     5. A2 <-> Pin33: GPIO13
-     6. A3 <-> Pin35: GPIO19
-     7. A4 <-> Pin37: GPIO26
-     8. B1-B4: Trigger Outputs
+2. Triggerausgänge 
+     1. Pin 37 Raspberry: GPIO 26
+     2. Pin 35 Raspberry: GPIO 19
+     3. Pin 33 Raspberry: GPIO 13
+     4. Pin 31 Raspberry: GPIO 6
      
-TODO: Image
 
 ### Raspberry Pi OS und ROS Installation
 Verwendet wird das [Raspbian Strech with desktop Image](https://www.raspberrypi.org/downloads/) mit der Kernel version 4.14.
@@ -237,14 +231,15 @@ Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier di
 
 ### Langzeittest an Kamera
 Zu Testzwecken wurde der Trigger an den realen Kameras getestet und dabei die Zeitstempel der Kameras aufgezeichnet. Aus den Zeitstempeln wurden die Frequenzen extrahiert. Diese wurden mittels Mittelwert, Varianz, Histogramm und Ausreißer hin ausgewertet. Folgendes Histogramm zeigt alle relevanten Statistiken:
-![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz.png)
 
-Außerdem wurde eine Statistik aufgestellt, welche die erwarteten Zeitstempel mit dem gemessenen Zeitstempeln vergleicht (Differenz gebildet). Aus diesem Vergleich lassen sich ebenfalls der Mittelwert, Varianz, Histogramm und Ausreißer bilden. Aus dieser Statistik lassen sich Rückschlüsse zum Jitter ziehen.<br />
-Datensatz 1:
-![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz_Jitter.png)
+![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Versuch2/Histogram_cam1_25Hz_Freq_header.png)
 
-Datensatz 2:
-![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Histogram_cam1_25Hz_Jitter_2.png)
+
+### Hinweise
+Bei der Analyse des Jitters ist aufgefallen, dass trotz minimaler Abweichung der Abtastperiode (siehe Plot 2), der Jitter linear über der Zeit immer größer wird (siehe Plot 1). Die Berechnung des Jitters erfolgt über die Differenz zwischem gemessenen und erwarteten Zeitstempel. Dies kommt dadurch zustande, dass die interne clock des Raspberrys für die Zeitmessung einen Drift besitzt. Dieser muss für ein optimales Triggern noch entfernt werden.
+
+![TWB_Projekt](https://github.com/kevinp1993/TWB_Trigger/blob/master/analyseData/Versuch2/Jitter_and_dt_header.png)
+
 
 
 ## Entwickler/Autoren/Verantwortliche

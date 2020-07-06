@@ -232,13 +232,13 @@ Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier di
 ### Langzeittest an Kamera
 Zu Testzwecken wurde der Trigger an den realen Kameras getestet und dabei die Zeitstempel der Kameras aufgezeichnet. Aus den Zeitstempeln wurden die Frequenzen extrahiert. Diese wurden mittels Mittelwert, Varianz, Histogramm und Ausreißer hin ausgewertet. Folgendes Histogramm zeigt alle relevanten Statistiken:
 
-![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/analyseData/Versuch2/Histogram_cam1_25Hz_Freq_header.png)
+![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/analyseData/Versuch2/Histogram_cam1_25Hz_Freq_header.png)
 
 
 ### Hinweise
 Bei der Analyse des Jitters ist aufgefallen, dass trotz minimaler Abweichung der Abtastperiode (siehe Plot 2), der Jitter linear über der Zeit immer größer wird (siehe Plot 1). Die Berechnung des Jitters erfolgt über die Differenz zwischem gemessenen und erwarteten Zeitstempel. Dies kommt dadurch zustande, dass die interne clock des Raspberrys für die Zeitmessung einen Drift besitzt. Dieser muss für ein optimales Triggern noch entfernt werden.
 
-![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/analyseData/Versuch2/Jitter_and_dt_header.png)
+![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/analyseData/Versuch2/Jitter_and_dt_header.png)
 
 
 

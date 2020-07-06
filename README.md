@@ -160,27 +160,27 @@ Die Ausgänge der GPIOs wurden mithilfe eines Oszilloskop beobachtet und die Sig
 Zunächst einmal die vier Ausgänge bei unterschiedlichem großem Zeitfenster:<br />
 
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/01_Signal_10ms.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/01_Signal_20ms.png" width="400" /> 
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/01_Signal_100ms.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/01_Signal_400ms.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_10ms.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_20ms.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_100ms.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_400ms.png" width="400" />
 </p> <br /> <br />
 
 Die Pulsweite lässt sich ebenfalls anpassen (10%, 30%, 50% und 70% als Beispiel aufgeführt):<br />
 
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/02_Signal_10P.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/02_Signal_30P.png" width="400" /> 
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/02_Signal_50P.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/02_Signal_70P.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_10P.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_30P.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_50P.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_70P.png" width="400" />
 </p> <br /> <br />
 
 Bei gegebener Freuqeunz von 30Hz (entspricht einer Periodendauer von 33,33ms) wird diese auch an den Ausgängen gemessen: <br />
 
-![Frequenz](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/03_Periode.png) <br /> <br />
+![Frequenz](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/03_Periode.png) <br /> <br />
 
 Der Jitter beträgt ungefähr 150us bei der abfallenden Flanke:
-![Jitter](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_1/04_Jitter.png) <br /> <br />
+![Jitter](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/04_Jitter.png) <br /> <br />
 
 ## Realisierung in der ROS Umgebung
 Im [catkin workspace](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws) wurde das Paket [cam_trigger](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws/src/cam_trigger) erstellt. Hier befindet sich zum einen die [cfg-File](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws/src/cam_trigger/cfg/cam_trigger.cfg) für die [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure/Tutorials) GUI, als auch der [Trigger Node](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws/src/cam_trigger/src/cam_trigger_publisher_node.cpp). <br />
@@ -210,22 +210,22 @@ rosrun rqt_reconfigure rqt_reconfigure
 Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier die Ergebnisse: <br />
 1. Das System wird mit der Auswahl von System gestartet. Der Defaultwert der Frequenz liegt bei 30Hz, für die Pulsweite bei 20% und alle Kameras sind ausgewählt:<br />
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/01_Signal_GUI.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/01_Signal.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/01_Signal_GUI.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/01_Signal.png" width="400" /> 
 </p> <br /> <br />
 
 2. Die Kameras lassen sich ein- und ausschalten:
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/02_Signal_cam_GUI.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/02_Signal_cam.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/02_Signal_cam_GUI.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/02_Signal_cam.png" width="400" /> 
 </p> <br /> <br />
 
 3. Die Frequenz und die Pulsweite der Signal lassen sich einstellen
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/03_Signal_30_40_GUI.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/03_Signal_30_40.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/04_Signal_50_50_GUI.png" width="400" /> 
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/Oscilloscope_Images_2/04_Signal_50_50.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/03_Signal_30_40_GUI.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/03_Signal_30_40.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/04_Signal_50_50_GUI.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/04_Signal_50_50.png" width="400" /> 
 </p> <br /> <br />
 
 

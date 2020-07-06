@@ -1,0 +1,4 @@
+<launch>
+  <node name="cam_trigger_publisher" pkg="cam_trigger" type="cam_trigger_publisher" respawn="true" />
+  <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" respawn="true" />
+</launch>

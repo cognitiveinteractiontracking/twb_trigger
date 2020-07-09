@@ -4,7 +4,7 @@ Das Ziel dieses Projektes ist es, die Kameras in der TWB mithilfe eines Raspberr
 Dazu wird ein periodischer Timer für das Triggern der Kameras genutzt, um an den GPIOs des Raspberry Pi ein Signal zu erzeugen.
 Außerdem läuft auf dem Raspberry Pi ROS, welches es dem Pi erlaubt mit dem bestehendem System zu kommunizieren.<br />
 Hinweis: Der Pegelwandler von 3,3V (GPIO Raspberry) auf 5V ist nicht nötig, da die Kameras auch mit einer Eingangsspannung von 3,3V getriggert werden können!
-![CITrack_Projekt](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/citrigger_Projekt.png)
+![CITrack_Projekt](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/TWB_Trigger_Projekt.png)
 
 ## Vorbereitung
 Dieser Teil befasst sich mit der Einrichtung der Hard- und Software des Raspberry Pi.

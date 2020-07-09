@@ -1,10 +1,10 @@
-# TWB Trigger Projekt
+# CITrack Trigger Projekt
 
 Das Ziel dieses Projektes ist es, die Kameras in der TWB mithilfe eines Raspberry Pi zu synchronisieren. 
 Dazu wird ein periodischer Timer für das Triggern der Kameras genutzt, um an den GPIOs des Raspberry Pi ein Signal zu erzeugen.
 Außerdem läuft auf dem Raspberry Pi ROS, welches es dem Pi erlaubt mit dem bestehendem System zu kommunizieren.<br />
 Hinweis: Der Pegelwandler von 3,3V (GPIO Raspberry) auf 5V ist nicht nötig, da die Kameras auch mit einer Eingangsspannung von 3,3V getriggert werden können!
-![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/Images/TWB_Trigger_Projekt.png)
+![CITrack_Projekt](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/citrigger_Projekt.png)
 
 ## Vorbereitung
 Dieser Teil befasst sich mit der Einrichtung der Hard- und Software des Raspberry Pi.
@@ -140,7 +140,7 @@ sudo systemctl start pigpiod
 ```
 
 ## Testen und Evaluation der PIGPIO Library und des periodischen Timers
-Für das Testen der Trigger Funktion wurde eine C-Programm [*InterruptTrigger*](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/InterruptTrigger/InterruptTrigger.c) geschrieben. Um die Frequenz in Hz und die Weite des Impulses in % anzupassen, können folgende Variablen im Quellcode geändert werden:
+Für das Testen der Trigger Funktion wurde eine C-Programm [*InterruptTrigger*](https://github.com/cognitiveinteractiontracking/citrigger/tree/master/InterruptTrigger/InterruptTrigger.c) geschrieben. Um die Frequenz in Hz und die Weite des Impulses in % anzupassen, können folgende Variablen im Quellcode geändert werden:
 ```c
 int freq = 30;
 double width = 5;
@@ -160,30 +160,30 @@ Die Ausgänge der GPIOs wurden mithilfe eines Oszilloskop beobachtet und die Sig
 Zunächst einmal die vier Ausgänge bei unterschiedlichem großem Zeitfenster:<br />
 
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_10ms.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_20ms.png" width="400" /> 
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_100ms.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_400ms.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_10ms.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_20ms.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_100ms.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/01_Signal_400ms.png" width="400" />
 </p> <br /> <br />
 
 Die Pulsweite lässt sich ebenfalls anpassen (10%, 30%, 50% und 70% als Beispiel aufgeführt):<br />
 
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_10P.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_30P.png" width="400" /> 
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_50P.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_70P.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_10P.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_30P.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_50P.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/02_Signal_70P.png" width="400" />
 </p> <br /> <br />
 
 Bei gegebener Freuqeunz von 30Hz (entspricht einer Periodendauer von 33,33ms) wird diese auch an den Ausgängen gemessen: <br />
 
-![Frequenz](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/03_Periode.png) <br /> <br />
+![Frequenz](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/03_Periode.png) <br /> <br />
 
 Der Jitter beträgt ungefähr 150us bei der abfallenden Flanke:
-![Jitter](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_1/04_Jitter.png) <br /> <br />
+![Jitter](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_1/04_Jitter.png) <br /> <br />
 
 ## Realisierung in der ROS Umgebung
-Im [catkin workspace](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws) wurde das Paket [cam_trigger](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws/src/cam_trigger) erstellt. Hier befindet sich zum einen die [cfg-File](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws/src/cam_trigger/cfg/cam_trigger.cfg) für die [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure/Tutorials) GUI, als auch der [Trigger Node](https://github.com/cognitiveinteractiontracking/twb_trigger/tree/master/catkin_ws/src/cam_trigger/src/cam_trigger_publisher_node.cpp). <br />
+Im [catkin workspace](https://github.com/cognitiveinteractiontracking/citrigger/tree/master/catkin_ws) wurde das Paket [cam_trigger](https://github.com/cognitiveinteractiontracking/citrigger/tree/master/catkin_ws/src/cam_trigger) erstellt. Hier befindet sich zum einen die [cfg-File](https://github.com/cognitiveinteractiontracking/citrigger/tree/master/catkin_ws/src/cam_trigger/cfg/cam_trigger.cfg) für die [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure/Tutorials) GUI, als auch der [Trigger Node](https://github.com/cognitiveinteractiontracking/citrigger/tree/master/catkin_ws/src/cam_trigger/src/cam_trigger_publisher_node.cpp). <br />
 Über die GUI sollen zur Laufzeit des Triggers Frequenz und Pulslänge einstellbar sein. Ebenso kann das sowohl der gesamte Triggerprozess über System, als auch einzelne Triggers für die Kamera ein- und ausgeschaltet werden. <br />
 Im Node werden periodische Clock-Message bei den Triggerzeitpunkten gepublished. Da das Publishen der Message auch Zeit benötigt, wird diese Zeit beim sleep berücksichtigt, um abweichende Periodendauern zu verhindern. <br />
 
@@ -210,35 +210,35 @@ rosrun rqt_reconfigure rqt_reconfigure
 Auch die Realisierung in ROS wurde mithilfe eines Oszilloskops getestet. Hier die Ergebnisse: <br />
 1. Das System wird mit der Auswahl von System gestartet. Der Defaultwert der Frequenz liegt bei 30Hz, für die Pulsweite bei 20% und alle Kameras sind ausgewählt:<br />
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/01_Signal_GUI.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/01_Signal.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/01_Signal_GUI.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/01_Signal.png" width="400" /> 
 </p> <br /> <br />
 
 2. Die Kameras lassen sich ein- und ausschalten:
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/02_Signal_cam_GUI.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/02_Signal_cam.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/02_Signal_cam_GUI.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/02_Signal_cam.png" width="400" /> 
 </p> <br /> <br />
 
 3. Die Frequenz und die Pulsweite der Signal lassen sich einstellen
 <p float="left">
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/03_Signal_30_40_GUI.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/03_Signal_30_40.png" width="400" />
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/04_Signal_50_50_GUI.png" width="400" /> 
-  <img src="https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/Images/Oscilloscope_Images_2/04_Signal_50_50.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/03_Signal_30_40_GUI.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/03_Signal_30_40.png" width="400" />
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/04_Signal_50_50_GUI.png" width="400" /> 
+  <img src="https://github.com/cognitiveinteractiontracking/citrigger/raw/master/Images/Oscilloscope_Images_2/04_Signal_50_50.png" width="400" /> 
 </p> <br /> <br />
 
 
 ### Langzeittest an Kamera
 Zu Testzwecken wurde der Trigger an den realen Kameras getestet und dabei die Zeitstempel der Kameras aufgezeichnet. Aus den Zeitstempeln wurden die Frequenzen extrahiert. Diese wurden mittels Mittelwert, Varianz, Histogramm und Ausreißer hin ausgewertet. Folgendes Histogramm zeigt alle relevanten Statistiken:
 
-![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/analyseData/Versuch2/Histogram_cam1_25Hz_Freq_header.png)
+![TWB_Projekt](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/analyseData/Versuch2/Histogram_cam1_25Hz_Freq_header.png)
 
 
 ### Hinweise
 Bei der Analyse des Jitters ist aufgefallen, dass trotz minimaler Abweichung der Abtastperiode (siehe Plot 2), der Jitter linear über der Zeit immer größer wird (siehe Plot 1). Die Berechnung des Jitters erfolgt über die Differenz zwischem gemessenen und erwarteten Zeitstempel. Dies kommt dadurch zustande, dass die interne clock des Raspberrys für die Zeitmessung einen Drift besitzt. Dieser muss für ein optimales Triggern noch entfernt werden.
 
-![TWB_Projekt](https://github.com/cognitiveinteractiontracking/twb_trigger/raw/master/analyseData/Versuch2/Jitter_and_dt_header.png)
+![TWB_Projekt](https://github.com/cognitiveinteractiontracking/citrigger/raw/master/analyseData/Versuch2/Jitter_and_dt_header.png)
 
 
 
